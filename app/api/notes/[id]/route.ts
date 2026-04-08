@@ -35,11 +35,7 @@ export async function PUT(
       where: { id: parseInt(id) },
       data: {
         title,
-        content,
         tags: tags || '',
-        color: color || 'yellow',
-        isPinned: isPinned ?? false
-      }
     })
 
     return NextResponse.json(note)
