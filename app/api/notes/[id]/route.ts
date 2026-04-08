@@ -32,10 +32,14 @@ export async function PUT(
     const { title, content, tags, color, isPinned } = body
 
     const note = await prisma.note.update({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id) },  // ✅ use awaited id
       data: {
         title,
+        content,
         tags: tags || '',
+        color: color || 'yellow',
+        isPinned: isPinned ?? false
+      }
     })
 
     return NextResponse.json(note)
