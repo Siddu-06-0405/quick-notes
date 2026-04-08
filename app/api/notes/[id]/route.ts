@@ -23,14 +23,18 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params   // ✅ FIX
+
+    console.log('PUT request id:', id)
+
     const body = await request.json()
     const { title, content, tags, color, isPinned } = body
 
     const note = await prisma.note.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },  // ✅ use awaited id
       data: {
         title,
         content,
@@ -52,8 +56,10 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = await params   // ✅ FIX
+
     await prisma.note.delete({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     })
 
     return NextResponse.json({ message: 'Note deleted' })

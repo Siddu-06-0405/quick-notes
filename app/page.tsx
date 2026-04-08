@@ -51,10 +51,12 @@ export default function Home() {
     const method = editingNote ? 'PUT' : 'POST'
     const url = editingNote ? `/api/notes/${editingNote.id}` : '/api/notes'
 
+    const bodyData = editingNote ? { ...formData, isPinned: editingNote.isPinned } : formData
+
     const response = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(bodyData)
     })
 
     if (response.ok) {
